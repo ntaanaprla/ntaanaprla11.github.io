@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Lapse Rate</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #456b92, #174678);
+            color: #fff;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            color: #ffd700;
+        }
+
+        .calculator {
+            background: rgba(17, 17, 17, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .calculator input, .calculator button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: rgba(27, 25, 25, 0.2);
+            color: #fff;
+        }
+
+        .calculator button {
+            background-color: #ff5733;
+            border: none;
+            cursor: pointer;
+        }
+
+        .calculator button:hover {
+            background-color: #ff4500;
+        }
+
+        .result {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kalkulator Lapse Rate</h1>
+    <div class="calculator">
+        <label for="temp1">Suhu pada ketinggian pertama (°C):</label>
+        <input type="number" id="temp1" placeholder="Masukkan suhu pertama">
+
+        <label for="temp2">Suhu pada ketinggian kedua (°C):</label>
+        <input type="number" id="temp2" placeholder="Masukkan suhu kedua">
+
+        <label for="height1">Ketinggian pertama (meter):</label>
+        <input type="number" id="height1" placeholder="Masukkan ketinggian pertama">
+
+        <label for="height2">Ketinggian kedua (meter):</label>
+        <input type="number" id="height2" placeholder="Masukkan ketinggian kedua">
+
+        <button onclick="calculateLapseRate()">Hitung Lapse Rate</button>
+
+        <div class="result" id="result">Hasil perhitungan lapse rate akan ditampilkan di sini.</div>
+    </div>
+
+    <script>
+        function calculateLapseRate() {
+            const temp1 = parseFloat(document.getElementById('temp1').value);
+            const temp2 = parseFloat(document.getElementById('temp2').value);
+            const height1 = parseFloat(document.getElementById('height1').value);
+            const height2 = parseFloat(document.getElementById('height2').value);
+
+            // Validasi input
+            if (isNaN(temp1) || isNaN(temp2) || isNaN(height1) || isNaN(height2)) {
+                document.getElementById('result').textContent = "Mohon masukkan nilai yang valid!";
+                return;
+            }
+
+            // Menghitung perubahan suhu dan ketinggian
+            const deltaT = temp2 - temp1; // °C
+            const deltaH = height2 - height1; // meter
+
+            // Lapse Rate (°C/km), konversi deltaH ke kilometer
+            const lapseRate = - (deltaT / (deltaH / 1000)); 
+
+            document.getElementById('result').innerHTML = `
+                Lapse Rate: ${lapseRate.toFixed(2)} °C/km
+            `;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Tata Surya & Kalkulator Gravitasi</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle, #001f3f, #000814);
+            color: #fff;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .simulation, .calculator {
+            flex: 1 1 calc(50% - 20px);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .simulation-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            margin: 0 auto;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            background: radial-gradient(circle, #444, #000);
+            overflow: hidden;
+        }
+
+        .planet, .sun {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .planet {
+            width: 20px;
+            height: 20px;
+        }
+
+        .planet1 { background-color: #ff5733; }
+        .planet2 { background-color: #33c4ff; }
+        .planet3 { background-color: #b833ff; }
+
+        .sun {
+            width: 50px;
+            height: 50px;
+            background-color: #ffd700;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .calculator input, .calculator button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .calculator input {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .calculator button {
+            background: #ff5733;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .calculator button:hover {
+            background: #ff4500;
+        }
+
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulasi Tata Surya & Kalkulator Gravitasi</h1>
+    <div class="container">
+        <!-- Simulasi Tata Surya -->
+        <div class="simulation">
+            <h2>Simulasi Tata Surya</h2>
+            <div class="simulation-container" id="simulation-container">
+                <div class="sun" id="sun"></div>
+                <div class="planet planet1" id="planet1"></div>
+                <div class="planet planet2" id="planet2"></div>
+                <div class="planet planet3" id="planet3"></div>
+            </div>
+        </div>
+
+        <!-- Kalkulator Gravitasi -->
+        <div class="calculator">
+            <h2>Kalkulator Gravitasi</h2>
+            <label for="mass1">Massa Objek 1 (kg):</label>
+            <input type="number" id="mass1" placeholder="Masukkan massa objek 1">
+            
+            <label for="mass2">Massa Objek 2 (kg):</label>
+            <input type="number" id="mass2" placeholder="Masukkan massa objek 2">
+            
+            <label for="distance">Jarak antara objek (m):</label>
+            <input type="number" id="distance" placeholder="Masukkan jarak antar objek">
+            
+            <button onclick="calculateGravity()">Hitung Gaya Gravitasi</button>
+            
+            <div class="result" id="result">Hasil akan ditampilkan di sini.</div>
+        </div>
+    </div>
+
+    <script>
+        // Simulasi Tata Surya
+        const planets = [
+            { el: document.querySelector('#planet1'), radius: 100, speed: 0.02, angle: 0 },
+            { el: document.querySelector('#planet2'), radius: 150, speed: 0.015, angle: 0 },
+            { el: document.querySelector('#planet3'), radius: 200, speed: 0.01, angle: 0 },
+        ];
+
+        const sun = document.querySelector('#sun');
+        const simulationContainer = document.getElementById('simulation-container');
+        const centerX = simulationContainer.offsetWidth / 2;
+        const centerY = simulationContainer.offsetHeight / 2;
+
+        function updateSimulation() {
+            planets.forEach(planet => {
+                planet.angle += planet.speed;
+                const x = centerX + planet.radius * Math.cos(planet.angle);
+                const y = centerY + planet.radius * Math.sin(planet.angle);
+                planet.el.style.left = `${x}px`;
+                planet.el.style.top = `${y}px`;
+            });
+            requestAnimationFrame(updateSimulation);
+        }
+        updateSimulation();
+
+        // Kalkulator Gravitasi
+        function calculateGravity() {
+            const G = 6.67430e-11; // Konstanta gravitasi
+            const mass1 = parseFloat(document.getElementById('mass1').value);
+            const mass2 = parseFloat(document.getElementById('mass2').value);
+            const distance = parseFloat(document.getElementById('distance').value);
+
+            if (mass1 && mass2 && distance) {
+                const force = G * (mass1 * mass2) / (distance * distance);
+                document.getElementById('result').innerHTML = `Gaya gravitasi antara dua objek: ${force.toExponential(3)} N`;
+            } else {
+                document.getElementById('result').textContent = "Mohon masukkan semua nilai!";
+            }
+        }
+    </script>
+</body>
+</html>
+

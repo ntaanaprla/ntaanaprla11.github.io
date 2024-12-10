@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awan, Hujan, dan Kalkulator 3D</title>
+    <style>
+        /* Latar belakang */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #4A90E2, #87CEFA);
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Container animasi */
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 60%;
+            transform-style: preserve-3d;
+        }
+
+        /* Awan */
+        .cloud {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            width: 300px;
+            height: 150px;
+            background: linear-gradient(to bottom, #ffffff, #dcdcdc);
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: float 4s infinite ease-in-out;
+            transform-origin: center;
+            transform: translateZ(-200px);
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(to bottom, #ffffff, #dcdcdc);
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 180px;
+            height: 120px;
+            top: -50px;
+            left: -40px;
+        }
+
+        .cloud::after {
+            width: 220px;
+            height: 140px;
+            top: -40px;
+            right: -50px;
+        }
+
+        /* Animasi awan */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateZ(-200px);
+            }
+            50% {
+                transform: translateY(-10px) translateZ(-200px);
+            }
+        }
+
+        /* Hujan */
+        .rain-container {
+            position: absolute;
+            top: 40%;
+            left: 25%;
+            width: 50%;
+            height: 60%;
+            overflow: hidden;
+            transform: translateZ(-300px);
+        }
+
+        .rain {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 2px;
+            height: 15px;
+            background: rgba(173, 216, 230, 0.8);
+            animation: fall 1s linear infinite;
+        }
+
+        @keyframes fall {
+            from {
+                top: -10%;
+            }
+            to {
+                top: 110%;
+            }
+        }
+
+        .rain:nth-child(1) { left: 5%; }
+        .rain:nth-child(2) { left: 15%; }
+        .rain:nth-child(3) { left: 25%; }
+        .rain:nth-child(4) { left: 35%; }
+        .rain:nth-child(5) { left: 45%; }
+        .rain:nth-child(6) { left: 55%; }
+        .rain:nth-child(7) { left: 65%; }
+        .rain:nth-child(8) { left: 75%; }
+        .rain:nth-child(9) { left: 85%; }
+        .rain:nth-child(10) { left: 95%; }
+
+        /* Kalkulator */
+        .calculator {
+            position: relative;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .calculator input {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .calculator button {
+            width: 45%;
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            background: #4A90E2;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .calculator button:hover {
+            background: #357ABD;
+        }
+
+        .calculator .result {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <div class="cloud"></div>
+        <div class="rain-container">
+            <div class="rain"></div>
+            <div class="rain"></div>
+            <div class="rain"></div>
+            <div class="rain"></div>
+            <div class="rain"></div>
+            <div class="rain"></div>
+            <div class="rain"></div>
+            <div class="rain"></div>
+            <div class="rain"></div>
+            <div class="rain"></div>
+        </div>
+    </div>
+
+    <div class="calculator">
+        <input type="number" id="num1" placeholder="Masukkan angka pertama">
+        <input type="number" id="num2" placeholder="Masukkan angka kedua">
+        <div>
+            <button onclick="calculate('+')">+</button>
+            <button onclick="calculate('-')">-</button>
+            <button onclick="calculate('*')">*</button>
+            <button onclick="calculate('/')">/</button>
+        </div>
+        <div class="result" id="result">Hasil: 0</div>
+    </div>
+
+    <script>
+        function calculate(operator) {
+            const num1 = parseFloat(document.getElementById('num1').value) || 0;
+            const num2 = parseFloat(document.getElementById('num2').value) || 0;
+            let result = 0;
+
+            switch (operator) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    result = num2 !== 0 ? num1 / num2 : 'Error';
+                    break;
+            }
+
+            document.getElementById('result').innerText = `Hasil: ${result}`;
+        }
+    </script>
+</body>
+</html>
+
+
+
